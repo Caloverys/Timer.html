@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en-ca">
+<meta charset="utf-8">
+<title> Timer (Coding project 2)</title>
+<head>
+  <style>
+    body {
+      background-color: #2E3440;
+      font-family: vhelvetica;
+    }
+    
+    #hi {
+      color: ghostwhite;
+      font-family: Arvo;
+      position: relative;
+      top: 200px;
+      left: 300px;
+      font-size: 85px;
+    }
+    
+    h1 {
+      color: rgb(255, 191, 0);
+      text-shadow: 3px 3px rgba(255, 207, 64, 0.4), 5px 3px rgba(255, 220, 115, 0.4);
+      font-weight: bold;
+      transform: rotate(320deg);
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 75px;
+    }
+    
+    #div {
+      font-size: 50px;
+      position: absolute;
+      top: 100px;
+      left: 300px;
+      color: #ff4000;
+      margin: 3px;
+      border: rgba(102, 167, 197, 0.965) ridge 7.5px;
+      padding: 5px;
+      width: 675px;
+      font-weight: bold;
+    }
+    
+    button {
+      font-size: 25px;
+      font-family: arial;
+      height: 115px;
+      width: 115px;
+      border-radius: 50%;
+      padding: 7px;
+      text-align: center;
+      font-weight: bold;
+      top: 500px;
+      text-transform: uppercase;
+    }
+    
+    .button1 {
+      background-color: rgba(219, 35, 35, 0.9);
+      border: rgb(135, 216, 219) double 10px;
+      color: red;
+      position: absolute;
+      left: 400px;
+    }
+    
+    .button2 {
+      background-color: rgba(38, 56, 222, 0.9);
+      border: rgb(255, 255, 26) double 10px;
+      color: darkblue;
+      position: absolute;
+      left: 400px;
+    }
+    
+    .button1:hover,
+    .button2:hover {
+      transform: 0.5s;
+      background-color: hsl(105, 100%, 55%);
+    }
+    
+    .clearbutton {
+      position: absolute;
+      left: 650px;
+      border: rgba(238, 36, 137, 0.95) double 10px;
+      background-color: rgba(194, 245, 66, 0.95);
+      color: hotpink;
+    }
+    
+    .lapbutton {
+      position: absolute;
+      left: 650px;
+      border: rgba(245, 220, 0, 0.94) double 10px;
+      background-color: rgba( 142, 219, 218, 0.9);
+      color: rgba(70, 70, 70, 0.97);
+    }
+    
+    .clearbutton:hover,
+    .lapbutton:hover {
+      transform: 0.3s;
+      background-color: rgb(66, 242, 245);
+    }
+    
+    #list {
+      list-style-type: none;
+      font-size: 45px;
+      position: absolute;
+      top: 20px;
+      right: 100px;
+      color: white;
+    }
+    
+    #clearlaps {
+      font-size: 20px;
+      width: 175px;
+      height: 50px;
+      border-radius: 1px;
+      border: white solid 4px;
+      background: none;
+      color: white;
+      position: absolute;
+      top: 630px;
+      left: 500px;
+    }
+    
+    #clearlaps: hover {
+      background-color: #E6D691;
+    }
+    
+    #clearlaps:active {
+      background-color: white;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Timer</h1>
+  <h2 id="hi"><span id="hour">00</span> : <span id="minute">00</span> : <span id="second">00</span> : <span id="millis">000</span></h2>
+  <div id="div"></div>
+  <div id="lap"></div>
+  <ul id="list">
+  </ul>
+  <button type="button" class="button2">Start</button>
+  <button type="button" class="clearbutton">Clear</button>
+  <button type="button" id="clearlaps"> Clear Laps </button>
+  <script>
+    let date = document.getElementById("div")
+    let hour = document.getElementById("hour")
+    let minute = document.getElementById("minute")
+    let second = document.getElementById("second")
+    let button = document.getElementsByClassName("button2")[0]
+    let millis = document.getElementById("millis")
+    let clearbutton = document.getElementsByClassName('clearbutton')[0]
+    let clearlaps = document.getElementById("clearlaps")
+    let list = document.getElementById("list")
+    var interval;
+    var num = 1;
+    var nums = 1;
+  </script>
+  <script>
+    setInterval(function() {
+      let dat = new Date();
+      let month = dat.getMonth() + 1
+      date.innerHTML = dat.getFullYear() + " / " + month + " / " + dat.getDate() + "&nbsp &nbsp &nbsp &nbsp"
+        //+"\xa0\xa0\xa0\xa0\xa0\xa0\xa0" 
+        //We could both use \xa0 && &nbsp here to represet space
+        +
+        dat.getHours() + " : " + dat.getMinutes() + " : " + dat.getSeconds() + " : " + dat.getMilliseconds();
+
+    }, 1);
+
+    function countdown() {
+      /*The fastest interval Chrome allow is every 4 milliseconds, so any interval faster than that will be 4 milliseconds anyways.*/
+      //For firefox, it is about every 10 milliseconds
+      millis.textContent = parseFloat(millis.textContent) + 4;
+      if (millis.textContent < 10) {
+        return millis.textContent = "00" + millis.textContent
+      } else if (millis.textContent > 9 && millis.textContent < 100) {
+        return millis.textContent = "0" + millis.textContent
+      } else if (millis.textContent > 999) {
+        millis.textContent = 0;
+        second.textContent = parseFloat(second.textContent) + 1;
+        if (second.textContent < 10) {
+          return second.textContent = "0" + second.textContent
+        }
+      } else if (second.textContent > 59) {
+        second.textContent = 0;
+        minute.textContent = parseFloat(minute.textContent) + 1;
+        if (minute.textContent < 10) {
+          return minute.textContent = "0" + minute.textContent
+        }
+      } else if (minute.textContent > 59) {
+        minute.textContent = 0;
+        hour.textContent = parseFloat(hour.textContent) + 1;
+        if (hour.textContent < 10) {
+          return hour.textContent = "0" + hour.textContent;
+        }
+      } else if (hour.textContent > 59) {
+        window.clearInterval(interval)
+        millis.textContent = 999;
+        second.textContent = 59;
+        minute.textContent = 59;
+        hour.textContent = 59
+
+      }
+    }
+    changecolors = () => {
+      let x = Math.random;
+      let y = Math.floor;
+      date.style.color = "rgba(" + y(x() * 100 + 75) + "," + y(x() * 100 + 75) + "," + y(x() * 100 + 75) + "," + (x() * 2 + 8).toFixed(1) + ")";
+    }
+    setInterval(changecolors, 1000)
+    startstop = () => {
+      num = num + 1;
+      if (num == 1) {
+        button.classList.remove("button1")
+        button.classList.toggle('button2')
+        button.innerHTML = "Start"
+        //The window is optional. We could either add it or not
+        window.clearInterval(interval);
+        clearbutton.classList.remove("lapbutton")
+        clearbutton.classList.toggle('clearbutton')
+        clearbutton.innerHTML = "Reset"
+      } else {
+        button.classList.remove("button2")
+        button.classList.toggle('button1')
+        button.innerHTML = "Stop"
+        interval = window.setInterval(countdown, 1)
+        num = 0;
+        clearbutton.classList.remove("clearbutton")
+        clearbutton.classList.toggle('lapbutton')
+        clearbutton.innerHTML = "Lap"
+      }
+    }
+    button.addEventListener("click", startstop)
+    clearlaps.addEventListener('click', function() {
+      list.innerHTML = ""
+    })
+
+    clearbutton.addEventListener("click", function() {
+      if (num === 1) {
+        list.innerHTML = ""
+        millis.textContent = "000";
+        second.textContent = "00";
+        minute.textContent = "00";
+        hour.textContent = "00";
+        minute.textContent = "00"
+        window.clearInterval(interval)
+      } else if (num === 0) {
+        /*Never use <nobr> tag, it is considered non standard and has deprecated by some broswer.*/
+        list.innerHTML += "<div style = 'whitespace: nowrap'>" + "Lap " + nums + ": " + "<li>" + hour.textContent + ":" + minute.textContent + ":" + second.textContent + ":" + millis.textContent + "<hr style = 'margin-top: 1px;'>" + "</li>" + "</div>"
+        nums = nums + 1
+      }
+    });
+  </script>
+</body>
+</html>
